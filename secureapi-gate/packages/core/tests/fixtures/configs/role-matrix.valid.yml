@@ -1,0 +1,44 @@
+roles:
+  user:
+    tokenEnv: USER_TOKEN
+    allowedEndpoints:
+      - method: get
+        path: /profiles/{id}
+    forbiddenEndpoints:
+      - method: GET
+        path: /admin/users
+  admin:
+    tokenEnv: ADMIN_TOKEN
+
+ownership:
+  userIdFields:
+    - userId
+    - ownerId
+  tenantFields:
+    - tenantId
+
+sensitiveFields:
+  - role
+  - isAdmin
+
+accessRules:
+  - id: RULE-USER-PROFILE
+    role: user
+    method: get
+    path: /profiles/{id}
+    ownershipRequired: true
+    expectedStatus: 403
+  - id: RULE-ADMIN-USERS
+    role: admin
+    method: GET
+    path: /admin/users
+    ownershipRequired: false
+
+workflowRules:
+  - object: approvalRequest
+    allowedTransitions:
+      draft: [submitted]
+      submitted: [approved, rejected]
+      approved: [paid]
+      rejected: []
+      paid: []

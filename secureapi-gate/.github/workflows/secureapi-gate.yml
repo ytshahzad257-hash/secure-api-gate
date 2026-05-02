@@ -1,0 +1,95 @@
+name: SecureAPI-Gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      demo_mode:
+        description: Demo API mode to scan
+        required: true
+        default: fixed
+        type: choice
+        options:
+          - fixed
+          - vulnerable
+      threshold:
+        description: Minimum passing SecureAPI risk score
+        required: true
+        default: "85"
+  pull_request:
+    paths:
+      - "packages/**"
+      - "examples/**"
+      - "docs/**"
+      - ".github/workflows/secureapi-gate.yml"
+
+jobs:
+  security-regression-gate:
+    runs-on: ubuntu-latest
+    env:
+      DEMO_MODE: ${{ github.event.inputs.demo_mode || 'fixed' }}
+      SECUREAPI_THRESHOLD: ${{ github.event.inputs.threshold || '85' }}
+      USER_TOKEN: demo-user-token
+      MANAGER_TOKEN: demo-manager-token
+      ADMIN_TOKEN: demo-admin-token
+      REVOKED_TOKEN: demo-revoked-token
+      EXPIRED_TOKEN: demo-expired-token
+      WEBHOOK_SECRET: demo-local-webhook-secret
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test
+
+      - name: Start selected demo API
+        run: |
+          if [ "$DEMO_MODE" = "vulnerable" ]; then
+            npm run demo:api:vulnerable > demo-api.log 2>&1 &
+          else
+            npm run demo:api:fixed > demo-api.log 2>&1 &
+          fi
+
+          echo $! > demo-api.pid
+
+          for attempt in {1..30}; do
+            if curl -fsS http://127.0.0.1:3000/health > /dev/null; then
+              echo "Demo API is ready in $DEMO_MODE mode."
+              exit 0
+            fi
+            sleep 1
+          done
+
+          echo "Demo API did not become ready."
+          cat demo-api.log
+          exit 1
+
+      - name: Run SecureAPI scan
+        run: |
+          if [ "$DEMO_MODE" = "vulnerable" ]; then
+            npm run secureapi:scan:vulnerable
+          else
+            npm run secureapi:scan:fixed
+          fi
+
+      - name: Enforce SecureAPI risk threshold
+        run: npm run dev -w @secureapi-gate/cli -- ci --summary ../../evidence/csv/results-summary.csv --threshold "$SECUREAPI_THRESHOLD"
+
+      - name: Upload SecureAPI evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: secureapi-evidence-${{ env.DEMO_MODE }}
+          path: evidence
+          if-no-files-found: warn
+
+      - name: Stop demo API
+        if: always()
+        run: |
+          if [ -f demo-api.pid ]; then
+            kill "$(cat demo-api.pid)" || true
+          fi

@@ -1,0 +1,73 @@
+services:
+  demo-api:
+    build:
+      context: .
+      target: runtime
+    command: npm run demo:api:${SECUREAPI_DEMO_MODE:-fixed}
+    environment:
+      PORT: "3000"
+      SECUREAPI_DEMO_MODE: ${SECUREAPI_DEMO_MODE:-fixed}
+      DATABASE_URL: ${DATABASE_URL:-file:./dev.db}
+      USER_TOKEN: ${USER_TOKEN:-demo-user-token}
+      MANAGER_TOKEN: ${MANAGER_TOKEN:-demo-manager-token}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-demo-admin-token}
+      REVOKED_TOKEN: ${REVOKED_TOKEN:-demo-revoked-token}
+      EXPIRED_TOKEN: ${EXPIRED_TOKEN:-demo-expired-token}
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET:-demo-local-webhook-secret}
+    ports:
+      - "${DEMO_API_PORT:-3000}:3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  secureapi-scan:
+    build:
+      context: .
+      target: runtime
+    profiles:
+      - scan
+    command: >
+      sh -c "npm run dev -w @secureapi-gate/cli -- scan
+      --spec ../../examples/specs/openapi.demo.yaml
+      --config ../../examples/configs/role-matrix.yml
+      --policy ../../examples/configs/test-policy.yml
+      --base-url ${SECUREAPI_SCAN_BASE_URL:-http://demo-api:3000}
+      --out ../../evidence
+      && npm run dev -w @secureapi-gate/cli -- ci
+      --summary ../../evidence/csv/results-summary.csv
+      --threshold ${SECUREAPI_THRESHOLD:-85}"
+    environment:
+      USER_TOKEN: ${USER_TOKEN:-demo-user-token}
+      MANAGER_TOKEN: ${MANAGER_TOKEN:-demo-manager-token}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-demo-admin-token}
+      REVOKED_TOKEN: ${REVOKED_TOKEN:-demo-revoked-token}
+      EXPIRED_TOKEN: ${EXPIRED_TOKEN:-demo-expired-token}
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET:-demo-local-webhook-secret}
+    volumes:
+      - ./evidence:/app/evidence
+    depends_on:
+      demo-api:
+        condition: service_healthy
+
+  dashboard:
+    build:
+      context: .
+      target: runtime
+    command: npm run dashboard -- --host 0.0.0.0
+    environment:
+      NODE_ENV: development
+    ports:
+      - "${DASHBOARD_PORT:-5173}:5173"
+    volumes:
+      - ./evidence:/app/evidence
+    depends_on:
+      demo-api:
+        condition: service_healthy

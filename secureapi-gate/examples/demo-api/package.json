@@ -1,0 +1,21 @@
+{
+  "name": "@secureapi-gate/demo-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/server.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev:vulnerable": "cross-env SECUREAPI_DEMO_MODE=vulnerable tsx src/server.ts",
+    "dev:fixed": "cross-env SECUREAPI_DEMO_MODE=fixed tsx src/server.ts",
+    "seed": "tsx prisma/seed.ts",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.18.0",
+    "express": "^4.18.3"
+  },
+  "devDependencies": {
+    "prisma": "^5.18.0"
+  }
+}

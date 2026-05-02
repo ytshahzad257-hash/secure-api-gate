@@ -1,0 +1,252 @@
+openapi: 3.0.3
+info:
+  title: SecureAPI-Gate Demo API
+  version: 0.1.0
+servers:
+  - url: http://localhost:3000
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+paths:
+  /health:
+    get:
+      summary: Demo API health check
+      responses:
+        "200":
+          description: OK
+  /users/me:
+    get:
+      summary: Read current user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Current user
+  /users/{id}:
+    patch:
+      summary: Update user profile fields
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Updated user
+        "400":
+          description: Sensitive field rejected
+  /profiles/{id}:
+    get:
+      summary: Read a user profile
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Profile response
+        "403":
+          description: Forbidden
+    patch:
+      summary: Update a profile
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Updated profile
+        "400":
+          description: Sensitive field rejected
+        "403":
+          description: Forbidden
+  /orders/{id}:
+    get:
+      summary: Read an order
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Order response
+        "403":
+          description: Forbidden
+  /payments:
+    post:
+      summary: Create a payment after approval
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Created payment
+        "409":
+          description: Approval required
+  /payments/{id}:
+    get:
+      summary: Read a payment
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Payment response
+        "403":
+          description: Forbidden
+    patch:
+      summary: Update allowed payment fields
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Updated payment
+        "400":
+          description: Sensitive field rejected
+        "403":
+          description: Forbidden
+  /tickets/{id}:
+    patch:
+      summary: Update support ticket
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Updated ticket
+        "403":
+          description: Forbidden
+  /approvals/{id}:
+    patch:
+      summary: Update approval metadata
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Updated approval
+        "400":
+          description: Direct state update rejected
+        "409":
+          description: Completed workflow locked
+  /approvals/{id}/transition:
+    post:
+      summary: Transition approval workflow state
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Transition accepted
+        "403":
+          description: Forbidden
+        "409":
+          description: Invalid transition
+  /manager/approvals:
+    get:
+      summary: Manager approval queue
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Approval queue
+        "403":
+          description: Forbidden
+  /admin/users:
+    get:
+      summary: Admin user listing
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User listing
+        "403":
+          description: Forbidden
+  /admin/inventory:
+    get:
+      summary: Admin inventory endpoint
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Inventory response
+        "403":
+          description: Forbidden
+  /admin/payments/export:
+    get:
+      summary: Admin payment export
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Payment export
+        "403":
+          description: Forbidden
+  /admin/metrics:
+    get:
+      summary: Internal admin metrics
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Metrics
+        "403":
+          description: Forbidden
+  /debug/version:
+    get:
+      summary: Internal version endpoint
+      responses:
+        "200":
+          description: Version metadata
+        "403":
+          description: Forbidden
+  /debug/config:
+    get:
+      summary: Debug configuration endpoint
+      responses:
+        "200":
+          description: Debug config
+        "404":
+          description: Not found
+  /v1/legacy/users:
+    get:
+      summary: Deprecated legacy user list
+      security:
+        - bearerAuth: []
+      deprecated: true
+      responses:
+        "200":
+          description: Legacy user list
+        "404":
+          description: Disabled
+  /webhooks/payment:
+    post:
+      summary: Simulated external payment webhook
+      responses:
+        "202":
+          description: Accepted
+        "401":
+          description: Invalid signature
+        "409":
+          description: Replay detected
+  /webhooks/payment/slow:
+    post:
+      summary: Simulated slow webhook dependency
+      responses:
+        "202":
+          description: Accepted
+        "504":
+          description: Timeout

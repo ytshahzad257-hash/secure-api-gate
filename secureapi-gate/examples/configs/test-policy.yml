@@ -1,0 +1,23 @@
+enabledCategories:
+  - BOLA
+  - BOPLA
+  - BFLA
+  - AUTH
+  - SESSION
+  - WORKFLOW
+  - INVENTORY
+  - THIRD_PARTY
+  - ERROR_LEAKAGE
+severityOverrides: {}
+ciThreshold: 85
+output:
+  directory: ./evidence
+redaction:
+  headers:
+    - authorization
+  bodyFields:
+    - token
+    - password
+timeoutMs: 5000
+retryCount: 0
+failFast: false

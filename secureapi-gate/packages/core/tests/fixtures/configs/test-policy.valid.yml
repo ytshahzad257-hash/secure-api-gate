@@ -1,0 +1,17 @@
+enabledCategories:
+  - bola
+  - BOPLA
+  - ERROR_LEAKAGE
+severityOverrides:
+  SAG-BOLA-001: HIGH
+ciThreshold: 85
+output:
+  directory: ./evidence
+redaction:
+  headers:
+    - authorization
+  bodyFields:
+    - token
+timeoutMs: 5000
+retryCount: 1
+failFast: false

@@ -1,0 +1,16 @@
+roles:
+  user:
+    tokenEnv: ""
+
+ownership:
+  userIdFields: []
+
+sensitiveFields:
+  - role
+
+accessRules:
+  - id: RULE-BAD
+    role: auditor
+    method: FETCH
+    path: admin/users
+    ownershipRequired: true

@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id
+  email         String   @unique
+  role          String
+  tenantId      String
+  isAdmin       Boolean  @default(false)
+  accountStatus String   @default("active")
+  displayName   String
+  createdAt     DateTime @default(now())
+
+  profiles  Profile[]
+  orders    Order[]
+  payments  Payment[]
+  tickets   SupportTicket[]
+  approvals ApprovalRequest[]
+}
+
+model Profile {
+  id          String @id
+  userId      String
+  ownerId     String
+  tenantId    String
+  displayName String
+  bio         String
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Order {
+  id       String @id
+  userId   String
+  tenantId String
+  total    Float
+  status   String
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Payment {
+  id            String @id
+  userId        String
+  customerId    String
+  tenantId      String
+  amount        Float
+  paymentStatus String
+  approvalId    String
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model SupportTicket {
+  id       String @id
+  userId   String
+  ownerId  String
+  tenantId String
+  subject  String
+  status   String
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model ApprovalRequest {
+  id            String @id
+  userId        String
+  ownerId       String
+  tenantId      String
+  approvalState String
+  amount        Float
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model InventoryItem {
+  id       String @id
+  sku      String @unique
+  name     String
+  quantity Int
+}

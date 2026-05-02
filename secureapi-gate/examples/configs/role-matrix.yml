@@ -1,0 +1,68 @@
+roles:
+  user:
+    tokenEnv: USER_TOKEN
+  manager:
+    tokenEnv: MANAGER_TOKEN
+  admin:
+    tokenEnv: ADMIN_TOKEN
+
+ownership:
+  userIdFields:
+    - userId
+    - ownerId
+    - customerId
+  tenantFields:
+    - tenantId
+
+sensitiveFields:
+  - role
+  - isAdmin
+  - accountStatus
+  - paymentStatus
+  - approvalState
+
+accessRules:
+  - id: RULE-001
+    role: user
+    method: GET
+    path: /profiles/{id}
+    ownershipRequired: true
+  - id: RULE-002
+    role: user
+    method: GET
+    path: /orders/{id}
+    ownershipRequired: true
+  - id: RULE-003
+    role: user
+    method: GET
+    path: /payments/{id}
+    ownershipRequired: true
+  - id: RULE-004
+    role: user
+    method: PATCH
+    path: /tickets/{id}
+    ownershipRequired: true
+  - id: RULE-005
+    role: manager
+    method: GET
+    path: /manager/approvals
+    ownershipRequired: false
+  - id: RULE-006
+    role: admin
+    method: GET
+    path: /admin/users
+    ownershipRequired: false
+  - id: RULE-007
+    role: admin
+    method: GET
+    path: /admin/inventory
+    ownershipRequired: false
+
+workflowRules:
+  - object: approvalRequest
+    allowedTransitions:
+      draft: [submitted]
+      submitted: [approved, rejected]
+      approved: [paid]
+      rejected: []
+      paid: []

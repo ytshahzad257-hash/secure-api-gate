@@ -1,0 +1,9 @@
+enabledCategories: []
+severityOverrides:
+  SAG-BOLA-001: severe
+ciThreshold: 140
+output:
+  directory: ""
+timeoutMs: 0
+retryCount: -1
+failFast: false

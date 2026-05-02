@@ -1,0 +1,7 @@
+ownership:
+  userIdFields:
+    - userId
+    - customerId
+  tenantFields:
+    - tenantId
+    - organizationId

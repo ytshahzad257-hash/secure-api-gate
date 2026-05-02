@@ -1,0 +1,8 @@
+workflowRules:
+  - object: approvalRequest
+    allowedTransitions:
+      draft: [submitted]
+      submitted: [approved, rejected]
+      approved: [paid]
+      rejected: []
+      paid: []

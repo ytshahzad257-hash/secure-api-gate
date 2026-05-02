@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+.env
+.DS_Store
+*.log
+*.sqlite
+*.sqlite-journal
+packages/dashboard/dist/
+examples/demo-api/prisma/dev.db
+evidence/json/*.json
+evidence/csv/*.csv
+evidence/html/*.html
+!evidence/json/.gitkeep
+!evidence/csv/.gitkeep
+!evidence/html/.gitkeep

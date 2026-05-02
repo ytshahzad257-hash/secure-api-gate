@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test-security-gate:
+    runs-on: ubuntu-latest
+    env:
+      USER_TOKEN: demo-user-token
+      MANAGER_TOKEN: demo-manager-token
+      ADMIN_TOKEN: demo-admin-token
+      REVOKED_TOKEN: demo-revoked-token
+      EXPIRED_TOKEN: demo-expired-token
+      WEBHOOK_SECRET: demo-local-webhook-secret
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test
+      - run: npm run lint
+      - run: npm run format:check
+
+      - name: Start fixed demo API
+        run: |
+          npm run demo:api:fixed > demo-api.log 2>&1 &
+          echo $! > demo-api.pid
+
+          for attempt in {1..30}; do
+            if curl -fsS http://127.0.0.1:3000/health > /dev/null; then
+              echo "Demo API is ready."
+              exit 0
+            fi
+            sleep 1
+          done
+
+          echo "Demo API did not become ready."
+          cat demo-api.log
+          exit 1
+
+      - name: Run SecureAPI scan
+        run: npm run secureapi:scan:fixed
+
+      - name: Enforce SecureAPI risk threshold
+        run: npm run secureapi:ci
+
+      - name: Upload SecureAPI evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: secureapi-evidence
+          path: evidence
+          if-no-files-found: warn
+
+      - name: Stop demo API
+        if: always()
+        run: |
+          if [ -f demo-api.pid ]; then
+            kill "$(cat demo-api.pid)" || true
+          fi
