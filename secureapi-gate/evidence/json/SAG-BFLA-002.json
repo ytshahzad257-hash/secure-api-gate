@@ -1,0 +1,94 @@
+{
+  "scenarioId": "SAG-BFLA-002",
+  "category": "BFLA",
+  "title": "Normal user calls manager endpoint",
+  "description": "A regular user attempts to access manager-only approval queues.",
+  "endpoint": "/manager/approvals",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/manager/approvals",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "631",
+      "etag": "W/\"277-9dlxb096Wn/DBYzZLjM56N7rtGU\"",
+      "date": "Sun, 03 May 2026 07:25:25 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "approvals": [
+        {
+          "id": "approval-draft",
+          "userId": "user-1",
+          "ownerId": "user-1",
+          "tenantId": "tenant-a",
+          "approvalState": "draft",
+          "amount": 18
+        },
+        {
+          "id": "approval-user-1",
+          "userId": "user-1",
+          "ownerId": "user-1",
+          "tenantId": "tenant-a",
+          "approvalState": "approved",
+          "amount": 42
+        },
+        {
+          "id": "approval-owned-by-user-2",
+          "userId": "user-2",
+          "ownerId": "user-2",
+          "tenantId": "tenant-a",
+          "approvalState": "approved",
+          "amount": 84
+        },
+        {
+          "id": "approval-rejected",
+          "userId": "user-1",
+          "ownerId": "user-1",
+          "tenantId": "tenant-a",
+          "approvalState": "rejected",
+          "amount": 21
+        },
+        {
+          "id": "approval-paid",
+          "userId": "user-1",
+          "ownerId": "user-1",
+          "tenantId": "tenant-a",
+          "approvalState": "paid",
+          "amount": 99
+        }
+      ]
+    }
+  },
+  "expectedBehavior": "The API denies manager functionality to regular users.",
+  "expectedStatus": 403,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 403 but observed HTTP 200",
+  "passed": false,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Verify role and function-level authorization on every privileged endpoint.",
+  "timestamp": "2026-05-03T07:25:25.958Z",
+  "toolVersion": "0.1.0"
+}

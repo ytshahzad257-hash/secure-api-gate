@@ -1,0 +1,64 @@
+{
+  "scenarioId": "SAG-BOLA-004",
+  "category": "BOLA",
+  "title": "User modifies another user's ticket",
+  "description": "Attempts to update a support ticket owned by another user.",
+  "endpoint": "/tickets/{id}",
+  "method": "PATCH",
+  "actorRole": "user",
+  "targetResourceOwner": "other-user",
+  "request": {
+    "method": "PATCH",
+    "url": "http://localhost:3000/tickets/ticket-owned-by-user-2",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "status": "closed"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "142",
+      "etag": "W/\"8e-+DxFtCyJqe+vNGrKXXFIqBS+hAc\"",
+      "date": "Sun, 03 May 2026 07:25:25 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "id": "ticket-owned-by-user-2",
+      "userId": "user-2",
+      "ownerId": "user-2",
+      "tenantId": "tenant-a",
+      "subject": "User 2 support ticket",
+      "status": "closed"
+    }
+  },
+  "expectedBehavior": "The API rejects cross-owner ticket modification.",
+  "expectedStatus": 403,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 403 but observed HTTP 200",
+  "passed": false,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API1:2023",
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V5"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Enforce object ownership checks before returning or mutating resource data.",
+  "timestamp": "2026-05-03T07:25:25.958Z",
+  "toolVersion": "0.1.0"
+}

@@ -1,0 +1,53 @@
+{
+  "scenarioId": "SAG-INV-005",
+  "category": "INVENTORY",
+  "title": "Unauthenticated API description exposed",
+  "description": "Checks whether generated API descriptions are exposed without intended controls.",
+  "endpoint": "/openapi.json",
+  "method": "GET",
+  "actorRole": "anonymous",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/openapi.json",
+    "headersRedacted": {}
+  },
+  "response": {
+    "status": 401,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "35",
+      "etag": "W/\"23-laPhrMSJJwj/rdHaaLYaPjrIP54\"",
+      "date": "Sun, 03 May 2026 07:22:29 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "authentication_required"
+    }
+  },
+  "expectedBehavior": "The API exposes documentation only when intentionally configured and sanitized.",
+  "expectedStatus": 401,
+  "observedStatus": 401,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "low",
+  "riskWeight": 3,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API9:2023",
+      "API8:2023"
+    ],
+    "OWASP_ASVS": [
+      "V1",
+      "V14"
+    ],
+    "NIST_SSDF": [
+      "PO.5",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Remove or protect debug, deprecated, internal, and unlisted API endpoints.",
+  "timestamp": "2026-05-03T07:22:29.945Z",
+  "toolVersion": "0.1.0"
+}

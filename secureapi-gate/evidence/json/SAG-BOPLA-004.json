@@ -1,0 +1,64 @@
+{
+  "scenarioId": "SAG-BOPLA-004",
+  "category": "BOPLA",
+  "title": "User injects hidden paymentStatus",
+  "description": "Submits paymentStatus in a payment update request where status is server-controlled.",
+  "endpoint": "/payments/{id}",
+  "method": "PATCH",
+  "actorRole": "user",
+  "request": {
+    "method": "PATCH",
+    "url": "http://localhost:3000/payments/payment-user-1",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "paymentStatus": "paid"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "151",
+      "etag": "W/\"97-gBjCb5aPdWAfSnk7orI5U0J0Jwg\"",
+      "date": "Sun, 03 May 2026 07:25:25 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "id": "payment-user-1",
+      "userId": "user-1",
+      "customerId": "user-1",
+      "tenantId": "tenant-a",
+      "amount": 42,
+      "paymentStatus": "paid",
+      "approvalId": "approval-user-1"
+    }
+  },
+  "expectedBehavior": "The API ignores or rejects hidden payment status fields.",
+  "expectedStatus": 400,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 400 but observed HTTP 200",
+  "passed": false,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API3:2023",
+      "API6:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V5"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Apply request body allowlisting and ignore or reject server-controlled fields.",
+  "timestamp": "2026-05-03T07:25:25.958Z",
+  "toolVersion": "0.1.0"
+}

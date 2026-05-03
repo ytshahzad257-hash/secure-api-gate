@@ -1,0 +1,69 @@
+{
+  "scenarioId": "SAG-3P-002",
+  "category": "THIRD_PARTY",
+  "title": "Simulated webhook replay",
+  "description": "Replays a previously accepted webhook delivery identifier.",
+  "endpoint": "/webhooks/payment",
+  "method": "POST",
+  "actorRole": "external-service",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/webhooks/payment",
+    "headersRedacted": {
+      "x-demo-signature": "demo-signature",
+      "x-demo-delivery-id": "demo-delivery-id"
+    },
+    "bodyRedacted": {
+      "paymentId": "payment-user-1",
+      "tenantId": "tenant-a",
+      "paymentStatus": "paid"
+    }
+  },
+  "response": {
+    "status": 202,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "179",
+      "etag": "W/\"b3-myKejZVw3sCUzhUFvrmo9calxfI\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "accepted": true,
+      "payment": {
+        "id": "payment-user-1",
+        "userId": "user-1",
+        "customerId": "user-1",
+        "tenantId": "tenant-a",
+        "amount": 42,
+        "paymentStatus": "paid",
+        "approvalId": "approval-user-1"
+      }
+    }
+  },
+  "expectedBehavior": "The API rejects replayed webhook events.",
+  "expectedStatus": 409,
+  "observedStatus": 202,
+  "observedBehavior": "expected HTTP 409 but observed HTTP 202",
+  "passed": false,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API10:2023"
+    ],
+    "OWASP_ASVS": [
+      "V10",
+      "V13"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate webhook signatures, replay identifiers, tenant binding, and payload schemas.",
+  "timestamp": "2026-05-03T07:10:39.988Z",
+  "toolVersion": "0.1.0"
+}

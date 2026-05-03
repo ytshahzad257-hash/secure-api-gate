@@ -1,0 +1,61 @@
+{
+  "scenarioId": "SAG-3P-004",
+  "category": "THIRD_PARTY",
+  "title": "Webhook tenant mismatch",
+  "description": "Sends a valid-looking webhook for a tenant that does not own the target payment.",
+  "endpoint": "/webhooks/payment",
+  "method": "POST",
+  "actorRole": "external-service",
+  "targetResourceOwner": "other-tenant",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/webhooks/payment",
+    "headersRedacted": {
+      "x-demo-signature": "demo-signature",
+      "x-demo-delivery-id": "demo-tenant-mismatch-delivery"
+    },
+    "bodyRedacted": {
+      "paymentId": "payment-user-1",
+      "tenantId": "tenant-b",
+      "paymentStatus": "paid"
+    }
+  },
+  "response": {
+    "status": 403,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "27",
+      "etag": "W/\"1b-yrzbl3QjjiigxdWp6Dc5aXry1FA\"",
+      "date": "Sun, 03 May 2026 07:09:26 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "tenant_mismatch"
+    }
+  },
+  "expectedBehavior": "The API validates webhook tenant and object ownership before applying changes.",
+  "expectedStatus": 403,
+  "observedStatus": 403,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API10:2023"
+    ],
+    "OWASP_ASVS": [
+      "V10",
+      "V13"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate webhook signatures, replay identifiers, tenant binding, and payload schemas.",
+  "timestamp": "2026-05-03T07:09:26.685Z",
+  "toolVersion": "0.1.0"
+}

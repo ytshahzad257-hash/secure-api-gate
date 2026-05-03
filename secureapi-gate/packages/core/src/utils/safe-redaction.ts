@@ -1,7 +1,17 @@
 import type { RedactionConfig } from "../types.js";
 
 const REDACTED = "[REDACTED]";
-const DEFAULT_REDACTED_HEADERS = ["authorization", "cookie", "set-cookie", "x-api-key"];
+const DEFAULT_REDACTED_HEADERS = [
+  "authorization",
+  "cookie",
+  "set-cookie",
+  "x-api-key",
+  "x-demo-signature",
+  "x-webhook-signature",
+  "x-hub-signature",
+  "x-hub-signature-256",
+  "stripe-signature"
+];
 const DEFAULT_REDACTED_BODY_FIELDS = ["token", "accessToken", "refreshToken", "password", "secret"];
 
 export interface RedactionOptions {

@@ -1,0 +1,65 @@
+{
+  "scenarioId": "SAG-BOPLA-002",
+  "category": "BOPLA",
+  "title": "User attempts to mass-assign isAdmin",
+  "description": "Submits an isAdmin flag to verify privileged fields cannot be set by clients.",
+  "endpoint": "/profiles/{id}",
+  "method": "PATCH",
+  "actorRole": "user",
+  "request": {
+    "method": "PATCH",
+    "url": "http://localhost:3000/profiles/profile-user-1",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "isAdmin": true
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "162",
+      "etag": "W/\"a2-VvVnLBWQ+10UVkvUcWf1QamEw44\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "id": "profile-user-1",
+      "userId": "user-1",
+      "ownerId": "user-1",
+      "tenantId": "tenant-a",
+      "displayName": "Demo User",
+      "bio": "Owned by user-1",
+      "role": "admin",
+      "isAdmin": true
+    }
+  },
+  "expectedBehavior": "The API rejects or ignores the isAdmin field.",
+  "expectedStatus": 400,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 400 but observed HTTP 200",
+  "passed": false,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API3:2023",
+      "API6:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V5"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Apply request body allowlisting and ignore or reject server-controlled fields.",
+  "timestamp": "2026-05-03T07:10:39.987Z",
+  "toolVersion": "0.1.0"
+}

@@ -1,0 +1,101 @@
+{
+  "scenarioId": "SAG-ERR-004",
+  "category": "ERROR_LEAKAGE",
+  "title": "Authorization failure returns excessive details",
+  "description": "Calls a forbidden endpoint and checks for verbose policy details in the response.",
+  "endpoint": "/admin/users",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/admin/users",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "785",
+      "etag": "W/\"311-HJtS/bx1NTcGgdaVzVqFY6l0OvY\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "users": [
+        {
+          "id": "user-1",
+          "email": "user@example.test",
+          "role": "user",
+          "tenantId": "tenant-a",
+          "isAdmin": false,
+          "accountStatus": "active",
+          "displayName": "Demo User"
+        },
+        {
+          "id": "user-2",
+          "email": "other@example.test",
+          "role": "user",
+          "tenantId": "tenant-a",
+          "isAdmin": false,
+          "accountStatus": "active",
+          "displayName": "Other User"
+        },
+        {
+          "id": "manager-1",
+          "email": "manager@example.test",
+          "role": "manager",
+          "tenantId": "tenant-a",
+          "isAdmin": false,
+          "accountStatus": "active",
+          "displayName": "Demo Manager"
+        },
+        {
+          "id": "admin-1",
+          "email": "admin@example.test",
+          "role": "admin",
+          "tenantId": "tenant-a",
+          "isAdmin": true,
+          "accountStatus": "active",
+          "displayName": "Demo Admin"
+        },
+        {
+          "id": "tenant-b-user-1",
+          "email": "tenant-b-user@example.test",
+          "role": "user",
+          "tenantId": "tenant-b",
+          "isAdmin": false,
+          "accountStatus": "active",
+          "displayName": "Tenant B User"
+        }
+      ]
+    }
+  },
+  "expectedBehavior": "The API denies authorization without revealing internal policy structure.",
+  "expectedStatus": 403,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 403 but observed HTTP 200",
+  "passed": false,
+  "severity": "medium",
+  "riskWeight": 6,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API8:2023",
+      "API1:2023"
+    ],
+    "OWASP_ASVS": [
+      "V7",
+      "V14"
+    ],
+    "NIST_SSDF": [
+      "RV.1",
+      "RV.3"
+    ]
+  },
+  "recommendation": "Return sanitized errors and avoid exposing internals or object existence signals.",
+  "timestamp": "2026-05-03T07:10:39.988Z",
+  "toolVersion": "0.1.0"
+}

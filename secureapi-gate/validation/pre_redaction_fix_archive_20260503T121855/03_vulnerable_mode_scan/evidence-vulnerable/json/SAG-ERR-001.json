@@ -1,0 +1,56 @@
+{
+  "scenarioId": "SAG-ERR-001",
+  "category": "ERROR_LEAKAGE",
+  "title": "Stack trace leaked",
+  "description": "Sends malformed input that may trigger an exceptional path.",
+  "endpoint": "/profiles/{id}",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/profiles/..%2F..%2F..%2Finvalid",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 500,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "106",
+      "etag": "W/\"6a-OPj2RF2eCQsJG66pjENtO/o6oKw\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "TypeError: invalid profile id",
+      "stack": "TypeError: invalid profile id\n    at profiles.ts:8:11"
+    }
+  },
+  "expectedBehavior": "The API returns sanitized errors without stack traces.",
+  "expectedStatus": 400,
+  "observedStatus": 500,
+  "observedBehavior": "expected HTTP 400 but observed HTTP 500; response body contained forbidden pattern \"stack\"; response body contained forbidden pattern \"at \"; response body contained forbidden pattern \"TypeError\"",
+  "passed": false,
+  "severity": "medium",
+  "riskWeight": 6,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API8:2023",
+      "API1:2023"
+    ],
+    "OWASP_ASVS": [
+      "V7",
+      "V14"
+    ],
+    "NIST_SSDF": [
+      "RV.1",
+      "RV.3"
+    ]
+  },
+  "recommendation": "Return sanitized errors and avoid exposing internals or object existence signals.",
+  "timestamp": "2026-05-03T07:10:39.988Z",
+  "toolVersion": "0.1.0"
+}

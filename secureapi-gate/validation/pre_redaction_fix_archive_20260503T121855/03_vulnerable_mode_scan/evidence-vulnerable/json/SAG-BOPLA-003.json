@@ -1,0 +1,64 @@
+{
+  "scenarioId": "SAG-BOPLA-003",
+  "category": "BOPLA",
+  "title": "User attempts to mass-assign accountStatus",
+  "description": "Submits accountStatus directly to check for unsafe binding to account state fields.",
+  "endpoint": "/users/{id}",
+  "method": "PATCH",
+  "actorRole": "user",
+  "request": {
+    "method": "PATCH",
+    "url": "http://localhost:3000/users/user-1",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "accountStatus": "active"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "146",
+      "etag": "W/\"92-iuvF/f6PQ/UdYiNqdZnD01hMT5A\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "id": "user-1",
+      "email": "user@example.test",
+      "role": "user",
+      "tenantId": "tenant-a",
+      "isAdmin": false,
+      "accountStatus": "active",
+      "displayName": "Demo User"
+    }
+  },
+  "expectedBehavior": "The API blocks direct accountStatus changes from regular user requests.",
+  "expectedStatus": 400,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 400 but observed HTTP 200",
+  "passed": false,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API3:2023",
+      "API6:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V5"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Apply request body allowlisting and ignore or reject server-controlled fields.",
+  "timestamp": "2026-05-03T07:10:39.987Z",
+  "toolVersion": "0.1.0"
+}

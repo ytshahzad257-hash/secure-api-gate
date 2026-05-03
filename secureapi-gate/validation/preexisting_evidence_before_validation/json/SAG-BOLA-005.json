@@ -1,0 +1,59 @@
+{
+  "scenarioId": "SAG-BOLA-005",
+  "category": "BOLA",
+  "title": "User approves another user's workflow object",
+  "description": "Attempts to transition an approval object owned by another account.",
+  "endpoint": "/approvals/{id}/transition",
+  "method": "POST",
+  "actorRole": "user",
+  "targetResourceOwner": "other-user",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/approvals/approval-owned-by-user-2/transition",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "transition": "approved"
+    }
+  },
+  "response": {
+    "status": 403,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "21",
+      "etag": "W/\"15-YxhEIACbJdL+t73q4n5kSAv7LD0\"",
+      "date": "Sat, 02 May 2026 15:40:37 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "forbidden"
+    }
+  },
+  "expectedBehavior": "The API checks ownership before accepting workflow transitions.",
+  "expectedStatus": 403,
+  "observedStatus": 403,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API1:2023",
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V5"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Enforce object ownership checks before returning or mutating resource data.",
+  "timestamp": "2026-05-02T15:40:37.737Z",
+  "toolVersion": "0.1.0"
+}

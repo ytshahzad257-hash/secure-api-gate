@@ -1,0 +1,57 @@
+{
+  "scenarioId": "SAG-INV-004",
+  "category": "INVENTORY",
+  "title": "Unlisted admin endpoint accessible",
+  "description": "Checks for reachable admin metrics endpoints absent from the declared API specification.",
+  "endpoint": "/admin/metrics",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/admin/metrics",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "36",
+      "etag": "W/\"24-6Sw0o6MajEDQ0jbND1SWCz1o9is\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "users": 5,
+      "payments": 3,
+      "tickets": 2
+    }
+  },
+  "expectedBehavior": "The API denies unlisted privileged endpoints to non-admin users.",
+  "expectedStatus": 403,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 403 but observed HTTP 200",
+  "passed": false,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API9:2023",
+      "API8:2023"
+    ],
+    "OWASP_ASVS": [
+      "V1",
+      "V14"
+    ],
+    "NIST_SSDF": [
+      "PO.5",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Remove or protect debug, deprecated, internal, and unlisted API endpoints.",
+  "timestamp": "2026-05-03T07:10:39.987Z",
+  "toolVersion": "0.1.0"
+}

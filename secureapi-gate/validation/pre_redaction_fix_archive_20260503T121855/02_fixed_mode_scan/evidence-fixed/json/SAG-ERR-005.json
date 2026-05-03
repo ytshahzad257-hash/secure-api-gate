@@ -1,0 +1,56 @@
+{
+  "scenarioId": "SAG-ERR-005",
+  "category": "ERROR_LEAKAGE",
+  "title": "Different errors reveal object existence",
+  "description": "Compares unauthorized and nonexistent object responses for existence oracle behavior.",
+  "endpoint": "/profiles/{id}",
+  "method": "GET",
+  "actorRole": "user",
+  "targetResourceOwner": "other-user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/profiles/%7Bid%7D",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 404,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "21",
+      "etag": "W/\"15-IapEsyUJs++crm3elUM5fZoGyC4\"",
+      "date": "Sun, 03 May 2026 07:09:26 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "not_found"
+    }
+  },
+  "expectedBehavior": "The API returns indistinguishable denial responses for unauthorized and missing objects.",
+  "expectedStatus": 404,
+  "observedStatus": 404,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API8:2023",
+      "API1:2023"
+    ],
+    "OWASP_ASVS": [
+      "V7",
+      "V14"
+    ],
+    "NIST_SSDF": [
+      "RV.1",
+      "RV.3"
+    ]
+  },
+  "recommendation": "Return sanitized errors and avoid exposing internals or object existence signals.",
+  "timestamp": "2026-05-03T07:09:26.685Z",
+  "toolVersion": "0.1.0"
+}

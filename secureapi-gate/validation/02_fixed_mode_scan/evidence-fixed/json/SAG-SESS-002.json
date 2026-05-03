@@ -1,0 +1,56 @@
+{
+  "scenarioId": "SAG-SESS-002",
+  "category": "SESSION",
+  "title": "Use token after role change",
+  "description": "Uses an old token after the actor's role has been downgraded.",
+  "endpoint": "/admin/users",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/admin/users",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 403,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "21",
+      "etag": "W/\"15-YxhEIACbJdL+t73q4n5kSAv7LD0\"",
+      "date": "Sun, 03 May 2026 07:22:29 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "forbidden"
+    }
+  },
+  "expectedBehavior": "The API evaluates current authorization state and denies stale privilege.",
+  "expectedStatus": 403,
+  "observedStatus": 403,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API2:2023",
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V2",
+      "V3",
+      "V4"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Bind sessions to current user, role, tenant, revocation, and logout state.",
+  "timestamp": "2026-05-03T07:22:29.944Z",
+  "toolVersion": "0.1.0"
+}

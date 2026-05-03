@@ -1,0 +1,52 @@
+{
+  "scenarioId": "SAG-AUTH-001",
+  "category": "AUTH",
+  "title": "Missing token request",
+  "description": "Calls a protected endpoint without an Authorization token.",
+  "endpoint": "/profiles/{id}",
+  "method": "GET",
+  "actorRole": "anonymous",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/profiles/profile-user-1",
+    "headersRedacted": {}
+  },
+  "response": {
+    "status": 401,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "30",
+      "etag": "W/\"1e-IbjijRiVBOqyihGfbk7DEQGya6A\"",
+      "date": "Sun, 03 May 2026 07:25:25 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "missing_demo_token"
+    }
+  },
+  "expectedBehavior": "The API rejects missing credentials with 401 and no sensitive details.",
+  "expectedStatus": 401,
+  "observedStatus": 401,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API2:2023"
+    ],
+    "OWASP_ASVS": [
+      "V2",
+      "V3"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate token signature, expiry, audience, issuer, and trusted claims consistently.",
+  "timestamp": "2026-05-03T07:25:25.959Z",
+  "toolVersion": "0.1.0"
+}

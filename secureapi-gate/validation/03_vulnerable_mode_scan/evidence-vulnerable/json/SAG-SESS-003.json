@@ -1,0 +1,61 @@
+{
+  "scenarioId": "SAG-SESS-003",
+  "category": "SESSION",
+  "title": "Use token for different tenant",
+  "description": "Uses a token whose tenant does not match the target resource tenant.",
+  "endpoint": "/orders/{id}",
+  "method": "GET",
+  "actorRole": "user",
+  "targetResourceOwner": "other-tenant",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/orders/order-user-1",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "88",
+      "etag": "W/\"58-JOkwXCZ4HekRXX34N9ixFR8M5LQ\"",
+      "date": "Sun, 03 May 2026 07:25:25 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "id": "order-user-1",
+      "userId": "user-1",
+      "tenantId": "tenant-a",
+      "total": 42,
+      "status": "open"
+    }
+  },
+  "expectedBehavior": "The API denies cross-tenant token/resource mismatches.",
+  "expectedStatus": 403,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 403 but observed HTTP 200",
+  "passed": false,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API2:2023",
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V2",
+      "V3",
+      "V4"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Bind sessions to current user, role, tenant, revocation, and logout state.",
+  "timestamp": "2026-05-03T07:25:25.959Z",
+  "toolVersion": "0.1.0"
+}

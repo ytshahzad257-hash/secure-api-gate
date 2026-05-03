@@ -1,0 +1,148 @@
+SecureAPI-Gate Validation 1: Build/Test/Lint
+Started: 2026-05-03T12:18:56.4738558+05:00
+Pre-rerun archive: <PROJECT_ROOT>\validation\pre_redaction_fix_archive_20260503T121855
+
+>>> npm ci
+
+added 372 packages, and audited 378 packages in 1m
+
+82 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+<<< exit code: 0 (PASS)
+
+>>> npm run build
+
+> secureapi-gate@0.1.0 build
+> npm run build --workspaces --if-present
+
+
+> @secureapi-gate/core@0.1.0 build
+> tsc -p tsconfig.json
+
+
+> @secureapi-gate/reporter@0.1.0 build
+> tsc -p tsconfig.json
+
+
+> @secureapi-gate/cli@0.1.0 build
+> tsc -p tsconfig.json
+
+
+> @secureapi-gate/dashboard@0.1.0 build
+> tsc -p tsconfig.json && vite build
+
+[36mvite v7.3.2 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 685 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                 [39m[1m[2m  0.41 kB[22m[1m[22m[2m │ gzip:   0.28 kB[22m
+[2mdist/[22m[35massets/index-DOFEHZNe.css  [39m[1m[2m  6.64 kB[22m[1m[22m[2m │ gzip:   1.86 kB[22m
+[2mdist/[22m[36massets/index-B-4Yzapg.js   [39m[1m[33m565.88 kB[39m[22m[2m │ gzip: 172.43 kB[22m
+[32m✓ built in 16.30s[39m
+
+> @secureapi-gate/demo-api@0.1.0 build
+> tsc -p tsconfig.json
+
+
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+
+<<< exit code: 0 (PASS)
+
+>>> npm run test
+
+> secureapi-gate@0.1.0 test
+> npm run test --workspaces --if-present
+
+
+> @secureapi-gate/core@0.1.0 test
+> vitest run --passWithNoTests
+
+
+ RUN  v4.1.5 <PROJECT_ROOT>/packages/core
+
+
+ Test Files  9 passed (9)
+      Tests  38 passed (38)
+   Start at  12:21:26
+   Duration  11.98s (transform 11.19s, setup 0ms, import 47.72s, tests 3.41s, environment 15ms)
+
+
+> @secureapi-gate/reporter@0.1.0 test
+> vitest run --passWithNoTests
+
+
+ RUN  v4.1.5 <PROJECT_ROOT>/packages/reporter
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  12:21:39
+   Duration  773ms (transform 145ms, setup 0ms, import 230ms, tests 10ms, environment 0ms)
+
+
+> @secureapi-gate/cli@0.1.0 test
+> vitest run --passWithNoTests
+
+
+ RUN  v4.1.5 <PROJECT_ROOT>/packages/cli
+
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  12:21:42
+   Duration  3.57s (transform 851ms, setup 0ms, import 2.06s, tests 919ms, environment 0ms)
+
+
+> @secureapi-gate/dashboard@0.1.0 test
+> vitest run --passWithNoTests
+
+
+ RUN  v4.1.5 <PROJECT_ROOT>/packages/dashboard
+
+No test files found, exiting with code 0
+
+
+> @secureapi-gate/demo-api@0.1.0 test
+> vitest run --passWithNoTests
+
+
+ RUN  v4.1.5 <PROJECT_ROOT>/examples/demo-api
+
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  12:21:49
+   Duration  2.04s (transform 448ms, setup 0ms, import 1.02s, tests 421ms, environment 1ms)
+
+
+include: **/*.{test,spec}.?(c|m)[jt]s?(x)
+exclude:  **/node_modules/**, **/.git/**
+
+
+<<< exit code: 0 (PASS)
+
+>>> npm run lint
+
+> secureapi-gate@0.1.0 lint
+> eslint .
+
+
+<<< exit code: 0 (PASS)
+
+>>> npm run format:check
+
+> secureapi-gate@0.1.0 format:check
+> prettier . --check
+
+Checking formatting...
+All matched files use Prettier code style!
+
+<<< exit code: 0 (PASS)

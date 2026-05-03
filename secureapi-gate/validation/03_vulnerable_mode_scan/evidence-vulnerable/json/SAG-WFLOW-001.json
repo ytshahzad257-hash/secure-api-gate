@@ -1,0 +1,63 @@
+{
+  "scenarioId": "SAG-WFLOW-001",
+  "category": "WORKFLOW",
+  "title": "Skip approval step",
+  "description": "Attempts to move directly from draft to approved without submitting first.",
+  "endpoint": "/approvals/{id}/transition",
+  "method": "POST",
+  "actorRole": "admin",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/approvals/approval-draft/transition",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "transition": "approved"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "121",
+      "etag": "W/\"79-O62F4Jas4kihb/6J+Cssy5nhzrY\"",
+      "date": "Sun, 03 May 2026 07:25:25 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "id": "approval-draft",
+      "userId": "user-1",
+      "ownerId": "user-1",
+      "tenantId": "tenant-a",
+      "approvalState": "approved",
+      "amount": 18
+    }
+  },
+  "expectedBehavior": "The API rejects workflow transitions that skip required states.",
+  "expectedStatus": 409,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 409 but observed HTTP 200",
+  "passed": false,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API6:2023",
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V11"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate workflow transitions against server-side state machines.",
+  "timestamp": "2026-05-03T07:25:25.959Z",
+  "toolVersion": "0.1.0"
+}

@@ -1,0 +1,60 @@
+{
+  "scenarioId": "SAG-3P-002",
+  "category": "THIRD_PARTY",
+  "title": "Simulated webhook replay",
+  "description": "Replays a previously accepted webhook delivery identifier.",
+  "endpoint": "/webhooks/payment",
+  "method": "POST",
+  "actorRole": "external-service",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/webhooks/payment",
+    "headersRedacted": {
+      "x-demo-signature": "[REDACTED]",
+      "x-demo-delivery-id": "demo-delivery-id"
+    },
+    "bodyRedacted": {
+      "paymentId": "payment-user-1",
+      "tenantId": "tenant-a",
+      "paymentStatus": "paid"
+    }
+  },
+  "response": {
+    "status": 409,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "35",
+      "etag": "W/\"23-rrc9ch/zylLYBfT/N8dkO89h9Kw\"",
+      "date": "Sun, 03 May 2026 07:22:29 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "webhook_replay_detected"
+    }
+  },
+  "expectedBehavior": "The API rejects replayed webhook events.",
+  "expectedStatus": 409,
+  "observedStatus": 409,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API10:2023"
+    ],
+    "OWASP_ASVS": [
+      "V10",
+      "V13"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate webhook signatures, replay identifiers, tenant binding, and payload schemas.",
+  "timestamp": "2026-05-03T07:22:29.945Z",
+  "toolVersion": "0.1.0"
+}

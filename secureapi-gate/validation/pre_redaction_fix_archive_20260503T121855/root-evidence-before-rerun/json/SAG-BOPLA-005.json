@@ -1,0 +1,63 @@
+{
+  "scenarioId": "SAG-BOPLA-005",
+  "category": "BOPLA",
+  "title": "User modifies approvalState directly",
+  "description": "Attempts to bypass transition handlers by directly setting approvalState.",
+  "endpoint": "/approvals/{id}",
+  "method": "PATCH",
+  "actorRole": "user",
+  "request": {
+    "method": "PATCH",
+    "url": "http://localhost:3000/approvals/approval-user-1",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "approvalState": "approved"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "122",
+      "etag": "W/\"7a-7QDbiI9hfoxaFfApJgHsiIRk2Fc\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "id": "approval-user-1",
+      "userId": "user-1",
+      "ownerId": "user-1",
+      "tenantId": "tenant-a",
+      "approvalState": "approved",
+      "amount": 42
+    }
+  },
+  "expectedBehavior": "The API rejects direct approvalState mutation outside the workflow transition API.",
+  "expectedStatus": 400,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 400 but observed HTTP 200",
+  "passed": false,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API3:2023",
+      "API6:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V5"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Apply request body allowlisting and ignore or reject server-controlled fields.",
+  "timestamp": "2026-05-03T07:10:39.987Z",
+  "toolVersion": "0.1.0"
+}

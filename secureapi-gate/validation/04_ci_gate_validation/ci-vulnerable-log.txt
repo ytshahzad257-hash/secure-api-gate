@@ -1,0 +1,50 @@
+SecureAPI-Gate Validation 4: CI Gate Vulnerable Evidence
+Started: 2026-05-03T12:25:39.4039854+05:00
+Pre-rerun archive: <PROJECT_ROOT>\validation\pre_redaction_fix_archive_20260503T121855
+
+>>> npm run dev -w @secureapi-gate/cli -- ci --summary ../../validation/03_vulnerable_mode_scan/evidence-vulnerable/csv/results-summary.csv --threshold 85
+
+> @secureapi-gate/cli@0.1.0 dev
+> tsx src/index.ts ci --summary ../../validation/03_vulnerable_mode_scan/evidence-vulnerable/csv/results-summary.csv --threshold 85
+
+SecureAPI Risk Score: 0
+CI/CD decision: BLOCK
+Passed: 8
+Failed: 37
+Failed critical/high scenarios:
+- SAG-BOLA-001 [high] User reads another user's profile
+- SAG-BOLA-002 [high] User reads another user's order
+- SAG-BOLA-003 [high] User reads another user's payment
+- SAG-BOLA-004 [high] User modifies another user's ticket
+- SAG-BOLA-005 [high] User approves another user's workflow object
+- SAG-BOPLA-001 [high] User attempts to mass-assign role
+- SAG-BOPLA-002 [high] User attempts to mass-assign isAdmin
+- SAG-BOPLA-003 [high] User attempts to mass-assign accountStatus
+- SAG-BOPLA-004 [high] User injects hidden paymentStatus
+- SAG-BOPLA-005 [high] User modifies approvalState directly
+- SAG-BFLA-001 [critical] Normal user calls admin users endpoint
+- SAG-BFLA-002 [high] Normal user calls manager endpoint
+- SAG-BFLA-003 [high] Manager calls admin inventory endpoint
+- SAG-BFLA-004 [high] User attempts to list all users
+- SAG-BFLA-005 [critical] User attempts to export all payments
+- SAG-SESS-002 [high] Use token after role change
+- SAG-SESS-003 [high] Use token for different tenant
+- SAG-WFLOW-001 [high] Skip approval step
+- SAG-WFLOW-002 [high] Approve rejected request
+- SAG-WFLOW-003 [high] Submit payment before approval
+- SAG-INV-003 [high] Debug route exposed
+- SAG-INV-004 [high] Unlisted admin endpoint accessible
+- SAG-3P-001 [high] External payment callback without signature
+- SAG-3P-002 [high] Simulated webhook replay
+- SAG-3P-004 [high] Webhook tenant mismatch
+- SAG-ERR-003 [high] SQL or ORM error leaked
+
+npm error Lifecycle script `dev` failed with error:
+npm error code 1
+npm error path <PROJECT_ROOT>\packages\cli
+npm error workspace @secureapi-gate/cli@0.1.0
+npm error location <PROJECT_ROOT>\packages\cli
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c tsx src/index.ts ci --summary ../../validation/03_vulnerable_mode_scan/evidence-vulnerable/csv/results-summary.csv --threshold 85
+
+<<< exit code: 1 (PASS)

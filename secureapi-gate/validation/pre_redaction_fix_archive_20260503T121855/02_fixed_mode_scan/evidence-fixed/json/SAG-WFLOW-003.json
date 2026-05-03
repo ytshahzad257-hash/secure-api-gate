@@ -1,0 +1,59 @@
+{
+  "scenarioId": "SAG-WFLOW-003",
+  "category": "WORKFLOW",
+  "title": "Submit payment before approval",
+  "description": "Attempts to create or submit payment before its approval workflow is complete.",
+  "endpoint": "/payments",
+  "method": "POST",
+  "actorRole": "user",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/payments",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "approvalId": "approval-user-1",
+      "amount": 42
+    }
+  },
+  "response": {
+    "status": 409,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "29",
+      "etag": "W/\"1d-isLKTJ2nPMBTc6I7jJPM4nBwqOA\"",
+      "date": "Sun, 03 May 2026 07:09:26 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "approval_required"
+    }
+  },
+  "expectedBehavior": "The API requires approval completion before payment submission.",
+  "expectedStatus": 409,
+  "observedStatus": 409,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API6:2023",
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V11"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate workflow transitions against server-side state machines.",
+  "timestamp": "2026-05-03T07:09:26.685Z",
+  "toolVersion": "0.1.0"
+}

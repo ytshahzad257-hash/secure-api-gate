@@ -1,0 +1,54 @@
+{
+  "scenarioId": "SAG-AUTH-004",
+  "category": "AUTH",
+  "title": "Token with wrong audience",
+  "description": "Calls a protected endpoint with a token issued for a different audience.",
+  "endpoint": "/profiles/{id}",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/profiles/profile-user-1",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 401,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "31",
+      "etag": "W/\"1f-7gDOsraZB4LgV69x34xJzvlJQME\"",
+      "date": "Sat, 02 May 2026 15:40:37 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "wrong_demo_audience"
+    }
+  },
+  "expectedBehavior": "The API rejects tokens whose audience does not match the API.",
+  "expectedStatus": 401,
+  "observedStatus": 401,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "medium",
+  "riskWeight": 6,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API2:2023"
+    ],
+    "OWASP_ASVS": [
+      "V2",
+      "V3"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate token signature, expiry, audience, issuer, and trusted claims consistently.",
+  "timestamp": "2026-05-02T15:40:37.737Z",
+  "toolVersion": "0.1.0"
+}

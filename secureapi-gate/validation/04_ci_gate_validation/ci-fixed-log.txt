@@ -1,0 +1,15 @@
+SecureAPI-Gate Validation 4: CI Gate Fixed Evidence
+Started: 2026-05-03T12:25:35.2310539+05:00
+Pre-rerun archive: <PROJECT_ROOT>\validation\pre_redaction_fix_archive_20260503T121855
+
+>>> npm run dev -w @secureapi-gate/cli -- ci --summary ../../validation/02_fixed_mode_scan/evidence-fixed/csv/results-summary.csv --threshold 85
+
+> @secureapi-gate/cli@0.1.0 dev
+> tsx src/index.ts ci --summary ../../validation/02_fixed_mode_scan/evidence-fixed/csv/results-summary.csv --threshold 85
+
+SecureAPI Risk Score: 100
+CI/CD decision: PASS
+Passed: 45
+Failed: 0
+
+<<< exit code: 0 (PASS)

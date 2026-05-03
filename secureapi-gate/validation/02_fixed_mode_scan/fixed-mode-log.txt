@@ -1,0 +1,66 @@
+SecureAPI-Gate Validation 2: Fixed Mode Scan
+Started: 2026-05-03T12:22:14.7985678+05:00
+Pre-rerun archive: <PROJECT_ROOT>\validation\pre_redaction_fix_archive_20260503T121855
+
+>>> npm run demo:api:fixed
+Demo API health check PASS for fixed mode: {"ok":true,"mode":"fixed"}
+
+>>> npm run secureapi:scan:fixed
+
+> secureapi-gate@0.1.0 secureapi:scan:fixed
+> cross-env USER_TOKEN=demo-user-token MANAGER_TOKEN=demo-manager-token ADMIN_TOKEN=demo-admin-token npm run dev -w @secureapi-gate/cli -- scan --spec ../../examples/specs/openapi.demo.yaml --config ../../examples/configs/role-matrix.yml --policy ../../examples/configs/test-policy.yml --base-url http://localhost:3000 --out ../../evidence
+
+
+> @secureapi-gate/cli@0.1.0 dev
+> tsx src/index.ts scan --spec ../../examples/specs/openapi.demo.yaml --config ../../examples/configs/role-matrix.yml --policy ../../examples/configs/test-policy.yml --base-url http://localhost:3000 --out ../../evidence
+
+Generated 45 security test cases.
+Wrote JSON evidence to ..\..\evidence\json
+Wrote CSV summary to ..\..\evidence\csv\results-summary.csv
+Wrote HTML report to ..\..\evidence\html\report.html
+SecureAPI Risk Score: 100
+CI/CD decision: PASS
+Passed: 45
+Failed: 0
+
+<<< exit code: 0 (PASS)
+
+>>> npm run secureapi:score
+
+> secureapi-gate@0.1.0 secureapi:score
+> npm run dev -w @secureapi-gate/cli -- score --summary ../../evidence/csv/results-summary.csv
+
+
+> @secureapi-gate/cli@0.1.0 dev
+> tsx src/index.ts score --summary ../../evidence/csv/results-summary.csv
+
+SecureAPI Risk Score: 100
+CI/CD decision: PASS
+Passed: 45
+Failed: 0
+
+<<< exit code: 0 (PASS)
+
+>>> npm run secureapi:report
+
+> secureapi-gate@0.1.0 secureapi:report
+> npm run dev -w @secureapi-gate/cli -- report --evidence ../../evidence/json --out ../../evidence/html/report.html
+
+
+> @secureapi-gate/cli@0.1.0 dev
+> tsx src/index.ts report --evidence ../../evidence/json --out ../../evidence/html/report.html
+
+Wrote HTML report to ../../evidence/html/report.html
+
+<<< exit code: 0 (PASS)
+
+> secureapi-gate@0.1.0 demo:api:fixed
+> npm run dev:fixed -w @secureapi-gate/demo-api
+
+
+> @secureapi-gate/demo-api@0.1.0 dev:fixed
+> cross-env SECUREAPI_DEMO_MODE=fixed tsx src/server.ts
+
+SecureAPI-Gate demo API listening on http://localhost:3000 in fixed mode
+
+Demo API stopped.

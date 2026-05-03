@@ -1,0 +1,55 @@
+{
+  "scenarioId": "SAG-INV-002",
+  "category": "INVENTORY",
+  "title": "Deprecated endpoint still accessible",
+  "description": "Checks whether a deprecated legacy endpoint remains reachable.",
+  "endpoint": "/v1/legacy/users",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/v1/legacy/users",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 404,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "21",
+      "etag": "W/\"15-IapEsyUJs++crm3elUM5fZoGyC4\"",
+      "date": "Sun, 03 May 2026 07:09:26 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "not_found"
+    }
+  },
+  "expectedBehavior": "The API disables deprecated endpoints or applies current authorization controls.",
+  "expectedStatus": 404,
+  "observedStatus": 404,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "medium",
+  "riskWeight": 6,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API9:2023",
+      "API8:2023"
+    ],
+    "OWASP_ASVS": [
+      "V1",
+      "V14"
+    ],
+    "NIST_SSDF": [
+      "PO.5",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Remove or protect debug, deprecated, internal, and unlisted API endpoints.",
+  "timestamp": "2026-05-03T07:09:26.685Z",
+  "toolVersion": "0.1.0"
+}

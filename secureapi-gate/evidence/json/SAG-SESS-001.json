@@ -1,0 +1,56 @@
+{
+  "scenarioId": "SAG-SESS-001",
+  "category": "SESSION",
+  "title": "Reuse revoked token",
+  "description": "Calls a protected endpoint with a token that has been revoked.",
+  "endpoint": "/profiles/{id}",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/profiles/profile-user-1",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 401,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "30",
+      "etag": "W/\"1e-6TrI3JI+YqK/sMwbr9f5efuroc4\"",
+      "date": "Sun, 03 May 2026 07:25:25 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "revoked_demo_token"
+    }
+  },
+  "expectedBehavior": "The API rejects revoked tokens with 401.",
+  "expectedStatus": 401,
+  "observedStatus": 401,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API2:2023",
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V2",
+      "V3",
+      "V4"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Bind sessions to current user, role, tenant, revocation, and logout state.",
+  "timestamp": "2026-05-03T07:25:25.959Z",
+  "toolVersion": "0.1.0"
+}

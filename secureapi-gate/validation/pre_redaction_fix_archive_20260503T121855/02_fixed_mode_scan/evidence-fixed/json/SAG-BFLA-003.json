@@ -1,0 +1,53 @@
+{
+  "scenarioId": "SAG-BFLA-003",
+  "category": "BFLA",
+  "title": "Manager calls admin inventory endpoint",
+  "description": "A manager attempts to access an admin-only inventory administration endpoint.",
+  "endpoint": "/admin/inventory",
+  "method": "GET",
+  "actorRole": "manager",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/admin/inventory",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 403,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "21",
+      "etag": "W/\"15-YxhEIACbJdL+t73q4n5kSAv7LD0\"",
+      "date": "Sun, 03 May 2026 07:09:26 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "forbidden"
+    }
+  },
+  "expectedBehavior": "The API enforces admin-only access and denies manager role abuse.",
+  "expectedStatus": 403,
+  "observedStatus": 403,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Verify role and function-level authorization on every privileged endpoint.",
+  "timestamp": "2026-05-03T07:09:26.685Z",
+  "toolVersion": "0.1.0"
+}

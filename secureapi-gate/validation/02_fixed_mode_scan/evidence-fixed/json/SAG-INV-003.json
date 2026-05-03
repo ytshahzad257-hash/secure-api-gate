@@ -1,0 +1,53 @@
+{
+  "scenarioId": "SAG-INV-003",
+  "category": "INVENTORY",
+  "title": "Debug route exposed",
+  "description": "Checks whether debug configuration routes are exposed outside local development.",
+  "endpoint": "/debug/config",
+  "method": "GET",
+  "actorRole": "anonymous",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/debug/config",
+    "headersRedacted": {}
+  },
+  "response": {
+    "status": 404,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "21",
+      "etag": "W/\"15-IapEsyUJs++crm3elUM5fZoGyC4\"",
+      "date": "Sun, 03 May 2026 07:22:29 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "not_found"
+    }
+  },
+  "expectedBehavior": "The API denies debug routes or removes them from deployed builds.",
+  "expectedStatus": 404,
+  "observedStatus": 404,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API9:2023",
+      "API8:2023"
+    ],
+    "OWASP_ASVS": [
+      "V1",
+      "V14"
+    ],
+    "NIST_SSDF": [
+      "PO.5",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Remove or protect debug, deprecated, internal, and unlisted API endpoints.",
+  "timestamp": "2026-05-03T07:22:29.945Z",
+  "toolVersion": "0.1.0"
+}

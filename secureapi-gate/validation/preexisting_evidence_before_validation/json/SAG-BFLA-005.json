@@ -1,0 +1,53 @@
+{
+  "scenarioId": "SAG-BFLA-005",
+  "category": "BFLA",
+  "title": "User attempts to export all payments",
+  "description": "A regular user attempts to call a bulk payment export function.",
+  "endpoint": "/admin/payments/export",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/admin/payments/export",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 403,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "21",
+      "etag": "W/\"15-YxhEIACbJdL+t73q4n5kSAv7LD0\"",
+      "date": "Sat, 02 May 2026 15:40:37 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "forbidden"
+    }
+  },
+  "expectedBehavior": "The API denies bulk export functionality to non-admin users.",
+  "expectedStatus": 403,
+  "observedStatus": 403,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "critical",
+  "riskWeight": 15,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Verify role and function-level authorization on every privileged endpoint.",
+  "timestamp": "2026-05-02T15:40:37.737Z",
+  "toolVersion": "0.1.0"
+}

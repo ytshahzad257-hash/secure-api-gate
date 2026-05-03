@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SecureAPI-Gate Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 32px; color: #18212f; background: #f7f8fb; }
+    main { max-width: 1180px; margin: 0 auto; }
+    h1, h2 { margin-bottom: 8px; }
+    .summary { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 12px; margin: 24px 0; }
+    .tile, table { background: #fff; border: 1px solid #d9deea; border-radius: 8px; }
+    .tile { padding: 16px; }
+    .label { color: #566274; font-size: 12px; text-transform: uppercase; }
+    .value { font-size: 28px; font-weight: 700; margin-top: 6px; }
+    .pass { color: #157347; }
+    .block { color: #b42318; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0 28px; overflow: hidden; }
+    th, td { border-bottom: 1px solid #e8ebf2; padding: 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f8; font-size: 13px; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: #eef2f8; padding: 2px 4px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>SecureAPI-Gate Report</h1>
+  <section class="summary">
+    <div class="tile"><div class="label">Overall Score</div><div class="value">100</div></div>
+    <div class="tile"><div class="label">CI/CD Gate</div><div class="value pass">PASS</div></div>
+    <div class="tile"><div class="label">Passed</div><div class="value pass">45</div></div>
+    <div class="tile"><div class="label">Failed</div><div class="value block">0</div></div>
+  </section>
+  <h2>Category Risk Breakdown</h2>
+  <table>
+    <thead><tr><th>Category</th><th>Total</th><th>Passed</th><th>Failed</th><th>Deductions</th><th>Score</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>AUTH</td>
+        <td>5</td>
+        <td>5</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100</td>
+      </tr>
+<tr>
+        <td>BFLA</td>
+        <td>5</td>
+        <td>5</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100</td>
+      </tr>
+<tr>
+        <td>BOLA</td>
+        <td>5</td>
+        <td>5</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100</td>
+      </tr>
+<tr>
+        <td>BOPLA</td>
+        <td>5</td>
+        <td>5</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100</td>
+      </tr>
+<tr>
+        <td>ERROR_LEAKAGE</td>
+        <td>5</td>
+        <td>5</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100</td>
+      </tr>
+<tr>
+        <td>INVENTORY</td>
+        <td>5</td>
+        <td>5</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100</td>
+      </tr>
+<tr>
+        <td>SESSION</td>
+        <td>5</td>
+        <td>5</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100</td>
+      </tr>
+<tr>
+        <td>THIRD_PARTY</td>
+        <td>5</td>
+        <td>5</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100</td>
+      </tr>
+<tr>
+        <td>WORKFLOW</td>
+        <td>5</td>
+        <td>5</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100</td>
+      </tr>
+    </tbody>
+  </table>
+  <h2>Scenario Evidence Summary</h2>
+  <table>
+    <thead><tr><th>Scenario</th><th>Category</th><th>Endpoint</th><th>Actor</th><th>Status</th><th>Severity</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>SAG-3P-001</code><br>External payment callback without signature</td>
+        <td>THIRD_PARTY</td>
+        <td><code>POST /webhooks/payment</code></td>
+        <td>external-service</td>
+        <td>401</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-3P-002</code><br>Simulated webhook replay</td>
+        <td>THIRD_PARTY</td>
+        <td><code>POST /webhooks/payment</code></td>
+        <td>external-service</td>
+        <td>409</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-3P-003</code><br>Simulated malformed external response</td>
+        <td>THIRD_PARTY</td>
+        <td><code>POST /webhooks/payment</code></td>
+        <td>external-service</td>
+        <td>400</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-3P-004</code><br>Webhook tenant mismatch</td>
+        <td>THIRD_PARTY</td>
+        <td><code>POST /webhooks/payment</code></td>
+        <td>external-service</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-3P-005</code><br>Missing timeout or fallback handling</td>
+        <td>THIRD_PARTY</td>
+        <td><code>POST /webhooks/payment/slow</code></td>
+        <td>external-service</td>
+        <td>504</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-AUTH-001</code><br>Missing token request</td>
+        <td>AUTH</td>
+        <td><code>GET /profiles/{id}</code></td>
+        <td>anonymous</td>
+        <td>401</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-AUTH-002</code><br>Expired token request</td>
+        <td>AUTH</td>
+        <td><code>GET /profiles/{id}</code></td>
+        <td>user</td>
+        <td>401</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-AUTH-003</code><br>Invalid signature token request</td>
+        <td>AUTH</td>
+        <td><code>GET /profiles/{id}</code></td>
+        <td>user</td>
+        <td>401</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-AUTH-004</code><br>Token with wrong audience</td>
+        <td>AUTH</td>
+        <td><code>GET /profiles/{id}</code></td>
+        <td>user</td>
+        <td>401</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-AUTH-005</code><br>Token with weak demo claim</td>
+        <td>AUTH</td>
+        <td><code>GET /profiles/{id}</code></td>
+        <td>user</td>
+        <td>401</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BFLA-001</code><br>Normal user calls admin users endpoint</td>
+        <td>BFLA</td>
+        <td><code>GET /admin/users</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>critical</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BFLA-002</code><br>Normal user calls manager endpoint</td>
+        <td>BFLA</td>
+        <td><code>GET /manager/approvals</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BFLA-003</code><br>Manager calls admin inventory endpoint</td>
+        <td>BFLA</td>
+        <td><code>GET /admin/inventory</code></td>
+        <td>manager</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BFLA-004</code><br>User attempts to list all users</td>
+        <td>BFLA</td>
+        <td><code>GET /admin/users</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BFLA-005</code><br>User attempts to export all payments</td>
+        <td>BFLA</td>
+        <td><code>GET /admin/payments/export</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>critical</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BOLA-001</code><br>User reads another user&#039;s profile</td>
+        <td>BOLA</td>
+        <td><code>GET /profiles/{id}</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BOLA-002</code><br>User reads another user&#039;s order</td>
+        <td>BOLA</td>
+        <td><code>GET /orders/{id}</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BOLA-003</code><br>User reads another user&#039;s payment</td>
+        <td>BOLA</td>
+        <td><code>GET /payments/{id}</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BOLA-004</code><br>User modifies another user&#039;s ticket</td>
+        <td>BOLA</td>
+        <td><code>PATCH /tickets/{id}</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BOLA-005</code><br>User approves another user&#039;s workflow object</td>
+        <td>BOLA</td>
+        <td><code>POST /approvals/{id}/transition</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BOPLA-001</code><br>User attempts to mass-assign role</td>
+        <td>BOPLA</td>
+        <td><code>PATCH /profiles/{id}</code></td>
+        <td>user</td>
+        <td>400</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BOPLA-002</code><br>User attempts to mass-assign isAdmin</td>
+        <td>BOPLA</td>
+        <td><code>PATCH /profiles/{id}</code></td>
+        <td>user</td>
+        <td>400</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BOPLA-003</code><br>User attempts to mass-assign accountStatus</td>
+        <td>BOPLA</td>
+        <td><code>PATCH /users/{id}</code></td>
+        <td>user</td>
+        <td>400</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BOPLA-004</code><br>User injects hidden paymentStatus</td>
+        <td>BOPLA</td>
+        <td><code>PATCH /payments/{id}</code></td>
+        <td>user</td>
+        <td>400</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-BOPLA-005</code><br>User modifies approvalState directly</td>
+        <td>BOPLA</td>
+        <td><code>PATCH /approvals/{id}</code></td>
+        <td>user</td>
+        <td>400</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-ERR-001</code><br>Stack trace leaked</td>
+        <td>ERROR_LEAKAGE</td>
+        <td><code>GET /profiles/{id}</code></td>
+        <td>user</td>
+        <td>400</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-ERR-002</code><br>Internal object ID leaked</td>
+        <td>ERROR_LEAKAGE</td>
+        <td><code>GET /orders/{id}</code></td>
+        <td>user</td>
+        <td>404</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-ERR-003</code><br>SQL or ORM error leaked</td>
+        <td>ERROR_LEAKAGE</td>
+        <td><code>GET /payments/{id}</code></td>
+        <td>user</td>
+        <td>400</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-ERR-004</code><br>Authorization failure returns excessive details</td>
+        <td>ERROR_LEAKAGE</td>
+        <td><code>GET /admin/users</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-ERR-005</code><br>Different errors reveal object existence</td>
+        <td>ERROR_LEAKAGE</td>
+        <td><code>GET /profiles/{id}</code></td>
+        <td>user</td>
+        <td>404</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-INV-001</code><br>Unauthenticated access to internal version endpoint</td>
+        <td>INVENTORY</td>
+        <td><code>GET /debug/version</code></td>
+        <td>anonymous</td>
+        <td>401</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-INV-002</code><br>Deprecated endpoint still accessible</td>
+        <td>INVENTORY</td>
+        <td><code>GET /v1/legacy/users</code></td>
+        <td>user</td>
+        <td>404</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-INV-003</code><br>Debug route exposed</td>
+        <td>INVENTORY</td>
+        <td><code>GET /debug/config</code></td>
+        <td>anonymous</td>
+        <td>404</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-INV-004</code><br>Unlisted admin endpoint accessible</td>
+        <td>INVENTORY</td>
+        <td><code>GET /admin/metrics</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-INV-005</code><br>Unauthenticated API description exposed</td>
+        <td>INVENTORY</td>
+        <td><code>GET /openapi.json</code></td>
+        <td>anonymous</td>
+        <td>401</td>
+        <td>low</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-SESS-001</code><br>Reuse revoked token</td>
+        <td>SESSION</td>
+        <td><code>GET /profiles/{id}</code></td>
+        <td>user</td>
+        <td>401</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-SESS-002</code><br>Use token after role change</td>
+        <td>SESSION</td>
+        <td><code>GET /admin/users</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-SESS-003</code><br>Use token for different tenant</td>
+        <td>SESSION</td>
+        <td><code>GET /orders/{id}</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-SESS-004</code><br>Use token with mismatched subject</td>
+        <td>SESSION</td>
+        <td><code>GET /profiles/{id}</code></td>
+        <td>user</td>
+        <td>403</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-SESS-005</code><br>Replay token after logout</td>
+        <td>SESSION</td>
+        <td><code>GET /payments/{id}</code></td>
+        <td>user</td>
+        <td>401</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-WFLOW-001</code><br>Skip approval step</td>
+        <td>WORKFLOW</td>
+        <td><code>POST /approvals/{id}/transition</code></td>
+        <td>admin</td>
+        <td>409</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-WFLOW-002</code><br>Approve rejected request</td>
+        <td>WORKFLOW</td>
+        <td><code>POST /approvals/{id}/transition</code></td>
+        <td>admin</td>
+        <td>409</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-WFLOW-003</code><br>Submit payment before approval</td>
+        <td>WORKFLOW</td>
+        <td><code>POST /payments</code></td>
+        <td>user</td>
+        <td>409</td>
+        <td>high</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-WFLOW-004</code><br>Modify completed workflow</td>
+        <td>WORKFLOW</td>
+        <td><code>PATCH /approvals/{id}</code></td>
+        <td>user</td>
+        <td>409</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+<tr>
+        <td><code>SAG-WFLOW-005</code><br>Replay workflow transition</td>
+        <td>WORKFLOW</td>
+        <td><code>POST /approvals/{id}/transition</code></td>
+        <td>user</td>
+        <td>409</td>
+        <td>medium</td>
+        <td class="pass">PASS</td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+</body>
+</html>

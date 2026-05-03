@@ -1,0 +1,58 @@
+{
+  "scenarioId": "SAG-WFLOW-005",
+  "category": "WORKFLOW",
+  "title": "Replay workflow transition",
+  "description": "Replays an already accepted transition request.",
+  "endpoint": "/approvals/{id}/transition",
+  "method": "POST",
+  "actorRole": "user",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/approvals/approval-user-1/transition",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "transition": "submitted"
+    }
+  },
+  "response": {
+    "status": 409,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "39",
+      "etag": "W/\"27-UWB+E1afBoY2fYXNx5TRSph/fV8\"",
+      "date": "Sun, 03 May 2026 07:09:26 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "invalid_workflow_transition"
+    }
+  },
+  "expectedBehavior": "The API treats workflow transitions as idempotent or rejects replay.",
+  "expectedStatus": 409,
+  "observedStatus": 409,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "medium",
+  "riskWeight": 6,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API6:2023",
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V11"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate workflow transitions against server-side state machines.",
+  "timestamp": "2026-05-03T07:09:26.685Z",
+  "toolVersion": "0.1.0"
+}

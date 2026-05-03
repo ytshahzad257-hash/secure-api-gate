@@ -61,6 +61,9 @@ describe("security test runner", () => {
           query: {
             token: "query-secret"
           },
+          headers: {
+            "x-demo-signature": "demo-signature"
+          },
           body: {
             token: "body-secret",
             nested: {
@@ -80,6 +83,7 @@ describe("security test runner", () => {
     expect(result.request.url).toContain("/profiles/profile-owned-by-user-2");
     expect(result.request.url).toContain("token=%5BREDACTED%5D");
     expect(result.request.headersRedacted.authorization).toBe("[REDACTED]");
+    expect(result.request.headersRedacted["x-demo-signature"]).toBe("[REDACTED]");
     expect(result.request.bodyRedacted).toEqual({
       token: "[REDACTED]",
       nested: {

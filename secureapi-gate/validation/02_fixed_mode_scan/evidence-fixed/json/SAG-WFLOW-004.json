@@ -1,0 +1,58 @@
+{
+  "scenarioId": "SAG-WFLOW-004",
+  "category": "WORKFLOW",
+  "title": "Modify completed workflow",
+  "description": "Attempts to mutate a workflow object after it has reached a completed state.",
+  "endpoint": "/approvals/{id}",
+  "method": "PATCH",
+  "actorRole": "user",
+  "request": {
+    "method": "PATCH",
+    "url": "http://localhost:3000/approvals/approval-paid",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "amount": 1
+    }
+  },
+  "response": {
+    "status": 409,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "37",
+      "etag": "W/\"25-84ZK8p9WsUpjLuBNnH7aeZW3+yM\"",
+      "date": "Sun, 03 May 2026 07:22:29 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "completed_workflow_locked"
+    }
+  },
+  "expectedBehavior": "The API blocks mutation of completed workflow objects.",
+  "expectedStatus": 409,
+  "observedStatus": 409,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "medium",
+  "riskWeight": 6,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API6:2023",
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V11"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate workflow transitions against server-side state machines.",
+  "timestamp": "2026-05-03T07:22:29.945Z",
+  "toolVersion": "0.1.0"
+}

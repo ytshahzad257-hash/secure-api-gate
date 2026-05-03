@@ -1,0 +1,57 @@
+{
+  "scenarioId": "SAG-INV-005",
+  "category": "INVENTORY",
+  "title": "Unauthenticated API description exposed",
+  "description": "Checks whether generated API descriptions are exposed without intended controls.",
+  "endpoint": "/openapi.json",
+  "method": "GET",
+  "actorRole": "anonymous",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/openapi.json",
+    "headersRedacted": {}
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "80",
+      "etag": "W/\"50-EDOh99NeeRUcyzNn2Vj3EyjgkCE\"",
+      "date": "Sun, 03 May 2026 07:25:25 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "openapi": "3.0.3",
+      "info": {
+        "title": "SecureAPI-Gate Demo API",
+        "version": "0.1.0"
+      }
+    }
+  },
+  "expectedBehavior": "The API exposes documentation only when intentionally configured and sanitized.",
+  "expectedStatus": 401,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 401 but observed HTTP 200",
+  "passed": false,
+  "severity": "low",
+  "riskWeight": 3,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API9:2023",
+      "API8:2023"
+    ],
+    "OWASP_ASVS": [
+      "V1",
+      "V14"
+    ],
+    "NIST_SSDF": [
+      "PO.5",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Remove or protect debug, deprecated, internal, and unlisted API endpoints.",
+  "timestamp": "2026-05-03T07:25:25.959Z",
+  "toolVersion": "0.1.0"
+}

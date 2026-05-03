@@ -1,0 +1,54 @@
+{
+  "scenarioId": "SAG-AUTH-003",
+  "category": "AUTH",
+  "title": "Invalid signature token request",
+  "description": "Calls a protected endpoint with a token whose signature is invalid.",
+  "endpoint": "/profiles/{id}",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/profiles/profile-user-1",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 401,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "34",
+      "etag": "W/\"22-FtmjmG/1NMvHHGJfQXHJjEZAizk\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "invalid_demo_signature"
+    }
+  },
+  "expectedBehavior": "The API rejects tokens with invalid signatures.",
+  "expectedStatus": 401,
+  "observedStatus": 401,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API2:2023"
+    ],
+    "OWASP_ASVS": [
+      "V2",
+      "V3"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate token signature, expiry, audience, issuer, and trusted claims consistently.",
+  "timestamp": "2026-05-03T07:10:39.987Z",
+  "toolVersion": "0.1.0"
+}

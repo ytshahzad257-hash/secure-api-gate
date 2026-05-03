@@ -1,0 +1,24 @@
+# Validation Rerun Failure Log
+
+Generated: 2026-05-03T12:27:30+05:00
+
+## Failure
+During the redaction-fix rerun, the vulnerable demo API startup command failed before scan execution because port 3000 was still held by a child Node process from the prior fixed-mode API run.
+
+Command:
+npm run demo:api:vulnerable
+
+Observed failure excerpt:
+Error: listen EADDRINUSE: address already in use :::3000
+code: EADDRINUSE
+syscall: listen
+port: 3000
+
+## Handling
+The leftover local SecureAPI-Gate demo process bound to port 3000 was identified and stopped. The vulnerable-mode validation was then rerun successfully using only the local demo API.
+
+Final status after rerun:
+- Vulnerable demo API health check: PASS
+- npm run secureapi:scan:vulnerable: PASS
+- npm run secureapi:score: PASS
+- npm run secureapi:ci: expected BLOCK with exit code 1, counted as PASS for blocking validation

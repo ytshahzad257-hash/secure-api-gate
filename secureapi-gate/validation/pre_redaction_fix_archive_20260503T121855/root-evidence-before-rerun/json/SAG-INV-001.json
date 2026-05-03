@@ -1,0 +1,56 @@
+{
+  "scenarioId": "SAG-INV-001",
+  "category": "INVENTORY",
+  "title": "Unauthenticated access to internal version endpoint",
+  "description": "Checks whether internal version metadata is exposed without authentication.",
+  "endpoint": "/debug/version",
+  "method": "GET",
+  "actorRole": "anonymous",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/debug/version",
+    "headersRedacted": {}
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "99",
+      "etag": "W/\"63-jIwcw9+KO+Z0Ucd3a64W2z6D8SY\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "mode": "vulnerable",
+      "version": "0.1.0",
+      "internalBuild": "local-demo-build",
+      "database": "sqlite-demo"
+    }
+  },
+  "expectedBehavior": "The API protects internal version/debug metadata from unauthenticated access.",
+  "expectedStatus": 401,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 401 but observed HTTP 200",
+  "passed": false,
+  "severity": "medium",
+  "riskWeight": 6,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API9:2023",
+      "API8:2023"
+    ],
+    "OWASP_ASVS": [
+      "V1",
+      "V14"
+    ],
+    "NIST_SSDF": [
+      "PO.5",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Remove or protect debug, deprecated, internal, and unlisted API endpoints.",
+  "timestamp": "2026-05-03T07:10:39.987Z",
+  "toolVersion": "0.1.0"
+}

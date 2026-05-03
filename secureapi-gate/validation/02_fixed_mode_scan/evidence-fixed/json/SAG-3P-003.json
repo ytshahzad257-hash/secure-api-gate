@@ -1,0 +1,59 @@
+{
+  "scenarioId": "SAG-3P-003",
+  "category": "THIRD_PARTY",
+  "title": "Simulated malformed external response",
+  "description": "Sends a malformed external payload shape to validate defensive parsing.",
+  "endpoint": "/webhooks/payment",
+  "method": "POST",
+  "actorRole": "external-service",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/webhooks/payment",
+    "headersRedacted": {
+      "x-demo-signature": "[REDACTED]",
+      "x-demo-delivery-id": "demo-malformed-delivery"
+    },
+    "bodyRedacted": {
+      "paymentId": "payment-user-1",
+      "tenantId": "tenant-a"
+    }
+  },
+  "response": {
+    "status": 400,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "37",
+      "etag": "W/\"25-hf9XWDi97oSaW8/LTit2oVuf0Nw\"",
+      "date": "Sun, 03 May 2026 07:22:29 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "malformed_webhook_payload"
+    }
+  },
+  "expectedBehavior": "The API rejects malformed third-party payloads without leaking internals.",
+  "expectedStatus": 400,
+  "observedStatus": 400,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "medium",
+  "riskWeight": 6,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API10:2023"
+    ],
+    "OWASP_ASVS": [
+      "V10",
+      "V13"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate webhook signatures, replay identifiers, tenant binding, and payload schemas.",
+  "timestamp": "2026-05-03T07:22:29.945Z",
+  "toolVersion": "0.1.0"
+}

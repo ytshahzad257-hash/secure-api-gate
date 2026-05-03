@@ -1,0 +1,58 @@
+{
+  "scenarioId": "SAG-WFLOW-002",
+  "category": "WORKFLOW",
+  "title": "Approve rejected request",
+  "description": "Attempts to approve a workflow object already in rejected state.",
+  "endpoint": "/approvals/{id}/transition",
+  "method": "POST",
+  "actorRole": "admin",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/approvals/approval-rejected/transition",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    },
+    "bodyRedacted": {
+      "transition": "approved"
+    }
+  },
+  "response": {
+    "status": 409,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "39",
+      "etag": "W/\"27-UWB+E1afBoY2fYXNx5TRSph/fV8\"",
+      "date": "Sat, 02 May 2026 15:40:37 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "error": "invalid_workflow_transition"
+    }
+  },
+  "expectedBehavior": "The API prevents transitions out of terminal rejected state.",
+  "expectedStatus": 409,
+  "observedStatus": 409,
+  "observedBehavior": "Observed response matched expected security behavior.",
+  "passed": true,
+  "severity": "high",
+  "riskWeight": 10,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API6:2023",
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4",
+      "V11"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate workflow transitions against server-side state machines.",
+  "timestamp": "2026-05-02T15:40:37.737Z",
+  "toolVersion": "0.1.0"
+}

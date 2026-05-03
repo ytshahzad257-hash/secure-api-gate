@@ -1,0 +1,72 @@
+{
+  "scenarioId": "SAG-BFLA-005",
+  "category": "BFLA",
+  "title": "User attempts to export all payments",
+  "description": "A regular user attempts to call a bulk payment export function.",
+  "endpoint": "/admin/payments/export",
+  "method": "GET",
+  "actorRole": "user",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:3000/admin/payments/export",
+    "headersRedacted": {
+      "authorization": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "339",
+      "etag": "W/\"153-uIiPjA+PdvSA0rQ7RBGd4IUPWkw\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "payments": [
+        {
+          "id": "payment-user-1",
+          "userId": "user-1",
+          "customerId": "user-1",
+          "tenantId": "tenant-a",
+          "amount": 42,
+          "paymentStatus": "paid",
+          "approvalId": "approval-user-1"
+        },
+        {
+          "id": "payment-owned-by-user-2",
+          "userId": "user-2",
+          "customerId": "user-2",
+          "tenantId": "tenant-a",
+          "amount": 84,
+          "paymentStatus": "pending",
+          "approvalId": "approval-owned-by-user-2"
+        }
+      ]
+    }
+  },
+  "expectedBehavior": "The API denies bulk export functionality to non-admin users.",
+  "expectedStatus": 403,
+  "observedStatus": 200,
+  "observedBehavior": "expected HTTP 403 but observed HTTP 200",
+  "passed": false,
+  "severity": "critical",
+  "riskWeight": 15,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API5:2023"
+    ],
+    "OWASP_ASVS": [
+      "V4"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Verify role and function-level authorization on every privileged endpoint.",
+  "timestamp": "2026-05-03T07:10:39.987Z",
+  "toolVersion": "0.1.0"
+}

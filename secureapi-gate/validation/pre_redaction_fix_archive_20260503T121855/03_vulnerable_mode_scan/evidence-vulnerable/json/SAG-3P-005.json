@@ -1,0 +1,52 @@
+{
+  "scenarioId": "SAG-3P-005",
+  "category": "THIRD_PARTY",
+  "title": "Missing timeout or fallback handling",
+  "description": "Exercises a simulated slow third-party dependency response.",
+  "endpoint": "/webhooks/payment/slow",
+  "method": "POST",
+  "actorRole": "external-service",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/webhooks/payment/slow",
+    "headersRedacted": {}
+  },
+  "response": {
+    "status": 202,
+    "headersRedacted": {
+      "x-powered-by": "Express",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "17",
+      "etag": "W/\"11-vsukLBYdcrS5DPrpyB/JceaAOHA\"",
+      "date": "Sun, 03 May 2026 07:10:39 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "bodyRedacted": {
+      "accepted": true
+    }
+  },
+  "expectedBehavior": "The API uses bounded timeout/fallback behavior for external dependency handling.",
+  "expectedStatus": 504,
+  "observedStatus": 202,
+  "observedBehavior": "expected HTTP 504 but observed HTTP 202",
+  "passed": false,
+  "severity": "medium",
+  "riskWeight": 6,
+  "standardsMapping": {
+    "OWASP_API_Top_10_2023": [
+      "API10:2023"
+    ],
+    "OWASP_ASVS": [
+      "V10",
+      "V13"
+    ],
+    "NIST_SSDF": [
+      "PW.7",
+      "RV.1"
+    ]
+  },
+  "recommendation": "Validate webhook signatures, replay identifiers, tenant binding, and payload schemas.",
+  "timestamp": "2026-05-03T07:10:39.988Z",
+  "toolVersion": "0.1.0"
+}
